@@ -16,23 +16,22 @@ library(testthat)
 # use_github_links()
 
 # use_testthat()
-# cf test a faire pour mon package
-# use_test("calculations")
+# use_test("cobiclust")
 # use_test("date")
 
 # use_spell_check()
 
 # use_readme_rmd()
 
-# use_logo("../hex_sotr.png")
 
 # use_lifecycle_badge("maturing")
 # badger::badge_last_commit()
-# badgecreatr::badge_license()
 
 # use_news_md()
 
-# use_vignette("example")
+# use_github_action_check_release()
+
+# use_package_doc()
 
 #### Used regularly ####
 
@@ -52,8 +51,18 @@ spell_check()
 check()
 
 goodpractice::goodpractice()
+covr::package_coverage()
+covr::report()
 
 install()
 # build()
 
-use_pkgdown()
+# use_github_release()
+# usethis::use_version()
+
+#### pkgdown ####
+
+pkgdown::build_site()
+# pkgdown::template_navbar()
+# pkgdown::template_reference()
+pkgdown::clean_site()
