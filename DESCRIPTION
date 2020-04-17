@@ -19,7 +19,8 @@ License: GPL-3
 URL: https://github.com/julieaubert/cobiclust
 BugReports: https://github.com/julieaubert/cobiclust/issues
 Imports:
-    cluster
+    cluster,
+    stats
 Suggests: 
     spelling,
     testthat
