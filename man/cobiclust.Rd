@@ -22,7 +22,7 @@ cobiclust(
 
 \item{G}{an integer specifying the number of groups in columns.}
 
-\item{nu_j}{a vector of . The length is equal to the number of columns.}
+\item{nu_j}{a vector of . The length is equal to the number of colums.}
 
 \item{a}{an numeric.}
 

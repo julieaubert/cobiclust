@@ -9,7 +9,7 @@ init_pam(x, nu_j = NULL, a = NULL, K = K, G = G, akg = FALSE)
 \arguments{
 \item{x}{The output of the cobiclust function.}
 
-\item{nu_j}{a vector of . The length is equal to the number of columns.}
+\item{nu_j}{a vector of . The length is equal to the number of colums.}
 
 \item{a}{an numeric.}
 
