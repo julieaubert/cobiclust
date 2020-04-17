@@ -2,8 +2,14 @@ Package: cobiclust
 Type: Package
 Title: Biclustering via Latent Block Model Adapted to Overdispersed Count Data
 Version: 0.1.0
-Author: Julie Aubert
-Maintainer: Julie Aubert <julie.aubert@agroparistech.fr>
+Authors@R: 
+    c(person(given = "Julie",
+             family = "Aubert",
+             role = c("aut", "cre"),
+             email = "julie.aubert@inrae.fr",
+             comment = c(ORCID = "0000-0001-5203-5748")),
+      person(given = "INRAE",
+             role = "cph"))
 Description: Implementation of a probabilistic method for biclustering
     adapted to overdispersed count data. It is a Gamma-Poisson Latent Block Model.
     It also implements two selection criteria in order to select the number of

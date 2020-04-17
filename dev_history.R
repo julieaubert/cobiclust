@@ -26,7 +26,7 @@ library(testthat)
 
 # use_logo("../hex_sotr.png")
 
-# use_lifecycle_badge("experimental")
+# use_lifecycle_badge("maturing")
 # badger::badge_last_commit()
 # badgecreatr::badge_license()
 

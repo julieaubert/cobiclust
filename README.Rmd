@@ -1,22 +1,29 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # cobiclust
 
 <!-- badges: start -->
-
-[![Lifecycle:
-maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-The goal of cobiclust is to perform a biclustering of over-dispersed
-count data such as those produced by amplicon-based sequencing for
-example.
+The goal of cobiclust is to perform a biclustering of over-dispersed count data such as those produced by amplicon-based sequencing for example.
 
 ## Installation
 
-You can install the released version of cobiclust from
-[CRAN](https://CRAN.R-project.org) with:
+You can install the released version of cobiclust from [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
 install.packages("cobiclust")
@@ -28,13 +35,11 @@ And the development version from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("julieaubert/cobiclust")
 ```
-
 ## Example
 
-This is a basic example which shows you how to perform a biclustering on
-simulated data:
+This is a basic example which shows you how to perform a biclustering on simulated data:
 
-``` r
+```{r example}
 library(cobiclust)
 ## basic example code
 # npc <- c(50, 40) # nodes per class
@@ -54,3 +59,4 @@ library(cobiclust)
 # colnames(M) <- paste("S", 1:ncol(M), sep = "_")
 # res <- cobiclust(M, K = 2, G = 3, nu_j = rep(1,120), a = 1/size, cvg_lim = 1e-5)
 ```
+
