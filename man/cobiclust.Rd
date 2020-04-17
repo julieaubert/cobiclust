@@ -47,7 +47,7 @@ W <- diag(KG[2]) \%x\% matrix(1, npc[2], 1)
 L <- 70 * matrix( runif( KG[1] * KG[2]), KG[1], KG[2])
 M_in_expectation <- Z \%*\% L \%*\% t(W)
 size <- 50
-M<-matrix(
+M <- matrix(
  rnbinom(
    n = length(as.vector(M_in_expectation)),
    mu = as.vector(M_in_expectation), size = size)

@@ -1,6 +1,7 @@
 # cobiclust R package
-# Copyright INRA 2017
-# UMR MIA-Paris, AgroParisTech, INRA, Universite Paris-Saclay, 75005, Paris, France
+# Copyright INRAE 2020
+# UMR 518 Mathématiques Informatique Appliquées-Paris
+# Université Paris-Saclay, AgroParisTech, INRAE, 75005, Paris, France
 ####################################################################################
 #' Initialisation of the co-clusters by partitioning around medoids method.
 #'

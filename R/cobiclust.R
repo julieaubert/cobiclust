@@ -36,8 +36,7 @@
 
 cobiclust <-
 function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
-         nbiter = 5000){
-  tol = 1e-04
+         nbiter = 5000, tol = 1e-04){
   # Parameter initialisation ---------------------------
   res_init <- init_pam(x = x, nu_j = nu_j, a = a, K = K, G = G, akg = akg)
 
@@ -62,7 +61,7 @@ function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
 
   while((crit > cvg_lim) & (j < nbiter))
   {
-    j = j+1
+    j <- j+1
     #cat("Iteration EM global ",j,"\\n")
     t_old <- t_jg
     s_old <- s_ik
@@ -79,7 +78,7 @@ function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
     crit_em1 <- 1
     while(crit_em1 > cvg_lim)
     {
-      i = i + 1
+      i <- i + 1
       pi_old <- pi_c
       alpha_old1 <- alpha_c
       # s_ik ------------------
@@ -137,7 +136,7 @@ function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
     crit_em2 <- 1
     while(crit_em2 > cvg_lim)
     {
-      i = i + 1
+      i <- i + 1
       rho_old <- rho_c
       alpha_old2 <- alpha_c
       t_old <- t_jg
@@ -204,13 +203,13 @@ function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
     a_old <- a0
     if (is.null(a)){
       if (akg == FALSE){
-        left_bound = sum(exp_logutilde)
-        right_bound = sum(exp_utilde)
+        left_bound <- sum(exp_logutilde)
+        right_bound <- sum(exp_utilde)
         a0 <- dicho(x = 0.01, y = abs(max(left_bound, right_bound)), threshold = 1e-08,
                     nb = n * m, left_bound = left_bound, right_bound = right_bound)
       } else {
-        left_bound = crossprod(s_ik, exp_logutilde %*% t_jg)
-        right_bound = crossprod(s_ik, exp_utilde %*% t_jg)
+        left_bound <- crossprod(s_ik, exp_logutilde %*% t_jg)
+        right_bound <- crossprod(s_ik, exp_utilde %*% t_jg)
         n_kg <- crossprod(s_ik, matrix(nrow = n, ncol = m, 1) %*% t_jg)
         a0 <- matrix(nrow = K, ncol = G, sapply(1:(K*G),
                                                 FUN = function(g) dicho(x = 0.01, y = 100, threshold = 1e-08, nb = n_kg[g], left_bound = left_bound[g], right_bound = right_bound[g])))
