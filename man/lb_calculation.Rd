@@ -4,9 +4,19 @@
 \alias{lb_calculation}
 \title{Calculate the lower bound}
 \usage{
-lb_calculation(x = x, qu_param = qu_param, s_ik = s_ik, pi_c = pi_c,
-  t_jg = t_jg, rho_c = rho_c, mu_i = mu_i, nu_j = nu_j,
-  alpha_c = alpha_c, a = a, akg = TRUE)
+lb_calculation(
+  x = x,
+  qu_param = qu_param,
+  s_ik = s_ik,
+  pi_c = pi_c,
+  t_jg = t_jg,
+  rho_c = rho_c,
+  mu_i = mu_i,
+  nu_j = nu_j,
+  alpha_c = alpha_c,
+  a = a,
+  akg = TRUE
+)
 }
 \arguments{
 \item{x}{a matrix of observations. Columns correspond to biological samples and rows to microorganisms.}

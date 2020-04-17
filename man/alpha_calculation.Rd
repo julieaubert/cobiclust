@@ -4,8 +4,16 @@
 \alias{alpha_calculation}
 \title{Calculate the matrix (alpha_{k,g})}
 \usage{
-alpha_calculation(s_ik = s_ik, t_jg = t_jg, nu_j = nu_j, mu_i = mu_i,
-  K = K, G = G, x = x, exp_utilde = exp_utilde)
+alpha_calculation(
+  s_ik = s_ik,
+  t_jg = t_jg,
+  nu_j = nu_j,
+  mu_i = mu_i,
+  K = K,
+  G = G,
+  x = x,
+  exp_utilde = exp_utilde
+)
 }
 \arguments{
 \item{s_ik}{s_ik.}

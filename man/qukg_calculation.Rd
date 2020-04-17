@@ -4,8 +4,15 @@
 \alias{qukg_calculation}
 \title{Calculate E_q(U_{ijr}) and E_q(log U_{ijr}) when U_ijr follows a Gamma(a_{k,g},a_{k,g})}
 \usage{
-qukg_calculation(s_ik = s_ik, t_jg = t_jg, x = x, mu_i = mu_i,
-  nu_j = nu_j, alpha_c = alpha_c, a = a)
+qukg_calculation(
+  s_ik = s_ik,
+  t_jg = t_jg,
+  x = x,
+  mu_i = mu_i,
+  nu_j = nu_j,
+  alpha_c = alpha_c,
+  a = a
+)
 }
 \arguments{
 \item{s_ik}{s_ik.}

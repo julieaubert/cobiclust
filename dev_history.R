@@ -16,6 +16,7 @@ library(testthat)
 # use_github_links()
 
 # use_testthat()
+# cf test a faire pour mon package
 # use_test("calculations")
 # use_test("date")
 

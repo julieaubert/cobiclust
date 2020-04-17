@@ -4,8 +4,16 @@
 \alias{cobiclust}
 \title{Perform a biclustering adapted to overdispersed count data.}
 \usage{
-cobiclust(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE,
-  cvg_lim = 1e-05, nbiter = 5000)
+cobiclust(
+  x,
+  K = 2,
+  G = 3,
+  nu_j = NULL,
+  a = NULL,
+  akg = FALSE,
+  cvg_lim = 1e-05,
+  nbiter = 5000
+)
 }
 \arguments{
 \item{x}{the input matrix of observed data.}
@@ -14,7 +22,7 @@ cobiclust(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE,
 
 \item{G}{an integer specifying the number of groups in columns.}
 
-\item{nu_j}{a vector of . The length is equal to the number of colums.}
+\item{nu_j}{a vector of . The length is equal to the number of columns.}
 
 \item{a}{an numeric.}
 

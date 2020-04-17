@@ -4,9 +4,15 @@
 \alias{cobiclustering}
 \title{Creation of the cobiclustering class.}
 \usage{
-cobiclustering(data = matrix(nrow = 3, ncol = 3, NA), K = 2, G = 2,
-  classification = list(length = 2), strategy = list(),
-  parameters = list(), info = list())
+cobiclustering(
+  data = matrix(nrow = 3, ncol = 3, NA),
+  K = 2,
+  G = 2,
+  classification = list(length = 2),
+  strategy = list(),
+  parameters = list(),
+  info = list()
+)
 }
 \description{
 Creation of the cobiclustering class.
