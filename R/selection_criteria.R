@@ -1,6 +1,6 @@
 # cobiclust R package
 # Copyright INRA 2017
-# UMR MIA-Paris, AgroParisTech, INRA, Universite Paris-Saclay, 75005, Paris, France
+# UMR MIA-Paris, AgroParisTech, INRAE, Universite Paris-Saclay, 75005, Paris, France
 ####################################################################################
 #' Calculate selection criteria.
 #'
@@ -21,6 +21,12 @@
 
 selection_criteria <-
   function(x, K, G){
+    if (K != x$K) {
+      warning('K and x$K are not the same. K will be ignored.')
+    }
+    if (G != x$G) {
+      warning('G and x$G are not the same. G will be ignored.')
+    }
     K <- x$K
     G <- x$G
     lb <- x$info$lb

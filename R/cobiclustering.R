@@ -1,6 +1,6 @@
 # cobiclust R package
 # Copyright INRA 2017
-# UMR MIA-Paris, AgroParisTech, INRA, Universite Paris-Saclay, 75005, Paris, France
+# UMR MIA-Paris, AgroParisTech, INRAE, Universite Paris-Saclay, 75005, Paris, France
 ####################################################################################
 #' Creation of the cobiclustering class.
 #' @export cobiclustering

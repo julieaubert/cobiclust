@@ -34,9 +34,67 @@
 #' @export
 #'
 
-cobiclust <-
-function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
+cobiclust <- function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
          nbiter = 5000, tol = 1e-04){
+
+  #---------------------  Some preliminary tests ---------------------
+
+  #--- on the input data
+  if (!is.matrix(x)){
+    stop('x should be a matrix.')
+  }
+
+  #--- on the LBM parameters
+  if ((K > nrow(x)) |
+       (K < 1)) {
+     stop('Inadequate number of groups in row. K should be between 1 and the total number of rows of the input data.')
+  }
+  if ((G > ncol(x)) |
+      (G < 1)) {
+    stop('Inadequate number of groups in columns. G should be between 1 and the total number of rows of the input data.')
+  }
+
+  # --- on the emission parameters
+  if (!is.null(nu_j)) {
+    if (is.vector(nu_j)){
+      if (length(nu_j) != ncol(x)){
+        stop('The dimensions of nu_j and x should be coherent.')
+      }
+    }
+    if (is.matrix(nu_j)){
+      if (ncol(nu_j) != ncol(x)){
+        stop('The dimensions of nu_j and x should be coherent.')
+      }
+      if (nrow(nu_j) != nrow(x)){
+        stop('The dimensions of nu_j and x should be coherent.')
+      }
+    }
+  }
+ #---------------------  TESTS on other parameters
+ # --- nbiter ---
+
+  if (nbiter < 2) {
+    stop('Please choose an higher value for nbiter.')
+  }
+  if (!is.integer(nbiter)) {
+    nbiter <- as.integer(nbiter)
+    #warning('nbiter was automatically converted to an integer.')
+  }
+
+  # --- tol ---
+  if (tol < 0 |
+      (tol > 1)) {
+    stop('Please choose a reasonable value for tol.')
+  }
+
+  # --- akg ---
+  if (!is.logical(akg)) {
+    stop('akg should be logical.')
+  }
+  # --- a ---
+  if (a < 0) {
+    stop('a should be positive.')
+  }
   # Parameter initialisation ---------------------------
   res_init <- init_pam(x = x, nu_j = nu_j, a = a, K = K, G = G, akg = akg)
 
