@@ -25,6 +25,7 @@ K <- KG[1]
 G <- KG[2]
 x <- M
 a <- 1/size
+nu_j = rep(1,120)
 res_init <- init_pam(x = x, nu_j = nu_j, a = a, K = K, G = G, akg = FALSE)
 #res_init_akg <- init_pam(x = M, nu_j = nu_j, a = 1/size, K = KG[1], G = KG[2], akg = TRUE)
 # a doit etre coherent avec akg si TRUE a doit etre de la dimension K*G
@@ -41,8 +42,8 @@ test_that("The initialisation is giving  elements of right size", {
   expect_type(res_init$parameters,"list")
   expect_type(res_init$strategy,"list")
 
-  expect_equal(dim(res_init$info$s_ik), c(nrow(x, K)))
-  expect_equal(dim(res_init$info$t_jg), c(ncol(x, G)))
+  expect_equal(dim(res_init$info$s_ik), c(nrow(x), K))
+  expect_equal(dim(res_init$info$t_jg), c(ncol(x), G))
   expect_equal(dim(res_init$info$exp_logutilde), dim(x))
   expect_equal(dim(res_init$info$exp_utilde), dim(x))
 
