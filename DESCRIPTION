@@ -29,7 +29,5 @@ Suggests:
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.1.0
-VignetteBuilder: rmarkdown
-
-
+RoxygenNote: 7.1.1
+VignetteBuilder: knitr
