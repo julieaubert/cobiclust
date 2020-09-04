@@ -1,6 +1,6 @@
 # cobiclust R package
-# Copyright INRA 2017
-# UMR MIA-Paris, AgroParisTech, INRAE, Universite Paris-Saclay, 75005, Paris, France
+# Copyright INRAE 2020
+# Universite Paris-Saclay, AgroParisTech, INRAE, UMR MIA-Paris, 75005, Paris, France
 ####################################################################################
 #' Calculate selection criteria.
 #'

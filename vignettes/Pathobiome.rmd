@@ -1,0 +1,205 @@
+---
+title: "cobiclust: _Erysiphe alphitoides_ pathobiome tutorial"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{my-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Introduction
+
+This tutorial intends you to use  `cobiclust` to find structure in the *_Erysiphe alphitoides_ pathobiome dataset* kindly provided by [Corinne Vacher](https://corinnevacher.wordpress.com/people/).
+
+It consists of metabarcoding data of leaf-associated microbiome of 114 leaves sampled from 3 different oaks, with different status with respect to a pathogen. Two barcodes were used: the 16S for the bacterial fraction and the ITS1 for the fungal fraction. One taxa (*Erysiphe alphitoides*) is of particular interest as it is the causal agent of oak powdery mildew. The goal of the original study ([10.1007/s00248-016-0777-x](https://link.springer.com/article/10.1007/s00248-016-0777-x)) was to assess the impact the impact of *Erysiphe alphitoides* on the foliar fungal and bacterial communities.
+
+Details on the sampling protocol and bioinformatic analyses of the raw reads are available in the original [publication](https://link.springer.com/article/10.1007/s00248-016-0777-x). 
+
+The data have been preprocessed and filtered (to remove low-abundance, low abundance taxa). They are available from the website
+
+- [count data](https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/counts.tsv)
+- [metadata](https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/metadata.tsv)
+<!-- - [offsets](https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/offsets.tsv) -->
+
+[Details](https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/PLN_oaks.html) on the metadata are available from the website.
+
+# Loading useful packages or functions
+
+We first load `cobiclust` (`ggplot2` for some graphics, `purr` and `dplyr` for some data manipulations) and `pathobiome_usefulfun.R` providing functions useful for this example.
+
+```{r setup, cache = FALSE}
+library(cobiclust)
+library(ggplot2)
+library(purrr)
+library(dplyr)
+```
+
+# Importing the data
+
+We then import the data in R and format them for `cobiclust`. The fungal and bacterial communities were sequenced using different barcodes and should thus have different offset. We compute offsets matrix with the Total Counts method using the function `calculate_offset_perkingdom`.
+
+```{r, echo = FALSE}
+calculate_offset_perkingdom <- function(counts = counts) {
+  kingdom <-  unlist(lapply(strsplit(rownames(counts), split = "_"), FUN = function(y) y[[1]]))
+  ou_fungi <- which(kingdom %in% c("f","E"))
+  TC_fungi <- colSums(counts[ou_fungi,])/mean(colSums(counts[ou_fungi,])) 
+  ou_b <- which(kingdom=="b")
+  TC_bact <- colSums(counts[ou_b,])/mean(colSums(counts[ou_b,])) 
+  
+  # Matrix of nu_j
+  indic <- c(rep(1, length(which(kingdom %in% c("f","E")))), rep(0,length(which(kingdom == "b"))))
+  indic2 <- as.matrix(cbind(indic, abs(indic-1)))
+  mat_nuj <- indic2%*%matrix(ncol = ncol(counts), nrow = 2, c(TC_fungi, TC_bact), byrow = TRUE)
+  return(mat_nuj)
+}
+```
+
+
+```{r}
+counts <- read.table(file = "https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/counts.tsv")
+metadata <- read.table(file = "https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/metadata.tsv")
+```
+# Preparing the data
+
+To be on the safe side, let's transform `counts` and `offsets` to matrices (they are imported as `data.frame` by default), and transpose then to have the OTUs in rows and the leaves in columns.
+
+```{r}
+counts <- as(t(counts), "matrix")
+# Calculate offsets matrix
+mat_nuj <- calculate_offset_perkingdom(counts)
+```
+
+Let's calculate the percentage of zero counts.
+```{r}
+length(which(counts==0))*100/length(counts)
+```
+
+# Fitting several Poisson-Gamma Latent Block Model
+
+We here fit the Poisson-Gamma Latent Block Model implemented in the `cobiclust` package with a block-specific dispersion parameter (`akg = TRUE`) for $K = 1, ..., 8$ and $G = 1, ..., 6$.
+
+Be caution : this chunk may be quite long to terminate; so we to not evaluate here.
+
+```{r cobiclust_akg, eval = FALSE}
+Kmax <- 8
+Gmax <- 6
+arg2 <- rep(rep(1:Kmax), Gmax)
+arg3 <- rep(1:Gmax, each = Kmax)
+
+res_akg <-  pmap(list(arg2, arg3), ~ cobiclust(counts, ..1, ..2, akg = TRUE, nu_j = mat_nuj))
+```
+
+# Selection of the best Poisson-Gamma Latent Block Model
+
+```{r best_model, eval = FALSE}
+arg1 <- 1:(Kmax*Gmax)
+# Calculation of the variational BIC and variational ICL criteria
+crit_akg <- pmap(list(arg1, arg2, arg3), ~ selection_criteria(res_akg[[..1]], K = ..2, G = ..3), )
+crit_akg <- data.frame(Reduce(rbind, crit_akg)) 
+# Selection of the best model
+vICL <- crit_akg %>% dplyr::filter(vICL == max(vICL)) 
+vICL
+ou_best <- apply( vICL[,c(1,6:7)], 1, FUN=function(x) intersect(which(arg2==x[2]),which(arg3==x[3])))
+best_akg <- res_akg[[ou_best]]
+```
+```{r}
+# We directly fit the best model for this example
+best_akg <- cobiclust(counts, K = 5, G = 3, akg = TRUE, nu_j = mat_nuj)
+```
+
+
+# Some informations   
+
+## Groups in rows and columns
+```{r}
+# Groups in rows
+Z <- best_akg$classification$rowclass
+# Groups in columns
+W <- best_akg$classification$colclass
+table(Z)
+table(W)
+# Description of the groups
+#sapply(1:max(W),FUN=function(x) table(colnames(counts)[W==x]))
+sapply(1:max(Z),FUN=function(x) rownames(counts)[Z==x])
+table(data.frame(metadata$tree,W))
+```
+## Models parameters
+```{r info}
+# alpha_kg
+print(best_akg$parameters$alpha)
+# a
+print(best_akg$parameters$a)
+```
+
+## Some useful graphics
+
+### Shannon diversity Index according to $W$
+Let's represent the Shannon diversity Index, a common measure of diversity using the proportional abundances of each species, calculated for each leaf, according to the group of leaves.
+
+```{r graph1}
+don <- counts
+p_i <- apply(don, 2, FUN = function(x) x / sum(x))
+H <- apply(p_i, 2, FUN = function(x) - sum(x * log2(x), na.rm = TRUE))
+df <- data.frame(Leaf = 1:ncol(don), H = H, W = factor(round(best_akg$info$t_jg %*% (1:max(W)))))
+levels(df$W) <- paste("W",levels(df$W),sep="")
+hwplot <- ggplot(data = df, aes(x = W, y = H))
+hwplot <- hwplot + geom_boxplot() + labs(x = "")
+print(hwplot)
+rm(p_i, df)
+```
+
+### Data reordered according to the biclustering
+```{r graph2}
+image(log(counts+0.5), main = "Raw data on log-scale")
+image(log(counts[order(Z), order(W)]+0.5), main = "Reordered data on log-scale")
+```
+
+### Boxplot of level of infection in log-scale for the groups of leaves
+
+```{r graph3}
+plot.infection <- ggplot(data = data.frame(pmInfection = log2(metadata$pmInfection), W = as.factor(paste("W",W,sep=""))), aes(y = pmInfection, x = W))
+plot.infection <- plot.infection + geom_boxplot() + labs(x = "", y = "Level of infection") + theme_bw()
+print(plot.infection)
+```
+
+### Boxplot of the $\hat{\mu_i}$ within each group in row $Z_k$
+
+```{r graph4}
+df1 <- data.frame(Microorg = rownames(counts), Z = round(best_akg$info$s_ik %*% (1:max(Z))))
+df2 <- data.frame(Microorg = rownames(counts), Mu = best_akg$parameters$mu_i)
+df <- merge(df1, df2, by = "Microorg")
+tmp <- sapply(1:max(Z), FUN = function(x) mean(best_akg$parameters$mu_i[Z == x]))
+df$Z <- factor(df$Z)
+levels(df$Z) <- paste("Z", levels(df$Z), sep = "")
+muzplot <- ggplot(data = df, aes(x = Z, y = log(Mu)))
+muzplot <- muzplot + geom_boxplot() + labs(x = "Z") 
+muzplot <- muzplot + theme_bw() +  labs(x = "", y = expression(mu[i])) 
+print(muzplot)
+rm(df1, df2, df, tmp)
+```
+
+### Plot of the vICL criterion
+
+We propose to plot the $vICL$ criterion according to the (y-axis) to the number of groups in rows $K$ (x-axis). Colours depends on $G$ values.
+```{r graph5, eval = FALSE}
+crit_akg$G <- as.factor(crit_akg$G)
+plot.vICL_K <- ggplot(data = crit_akg, aes(y = vICL, x = K, group = G, colour = G))
+
+plot.vICL_K <- plot.vICL_K + geom_point()  + geom_line() +  theme_bw() + theme(legend.position = "bottom") 
+print(plot.vICL_K)
+```
+
+# Remarks
+
+This vignette is designed to help you work with `cobiclust`. Naturally, you can use your imagination to represent or visualize the results.
+
+I would like to thank Mahendra Mariadassou, Julien Chiquet and Stéphane Robin who wrote a vignette on the use of [`PLNModels`](http://julien.cremeriefamily.info/PLNmodels/) based on the same example and from which I was very strongly inspired for the beginning of this vignette.
+

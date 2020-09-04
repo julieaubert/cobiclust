@@ -1,6 +1,6 @@
 # cobiclust R package
-# Copyright INRA 2017
-# UMR MIA-Paris, AgroParisTech, INRA, Universite Paris-Saclay, 75005, Paris, France
+# Copyright INRAE 2020
+# Universite Paris-Saclay, AgroParisTech, INRAE, UMR MIA-Paris, 75005, Paris, France
 ####################################################################################
 #' Calculate E_q(U_{ijr}) and E_q(log U_{ijr}) when U_ijr follows a Gamma(a,a)
 #'
@@ -219,7 +219,7 @@ penalty <-  function(x){
   m <- length(x$parameters$nu_j)
 
   if (x$strategy$akg == TRUE){
-    penalty <- 0.5 * (K - 1) * log(n) + 0.5 * (G - 1) * log(m) + 0.5 * (2 * K * G - 1) * log(m * n)
+    penalty <- 0.5 * (K - 1) * log(n) + 0.5 * (G - 1) * log(m) + 0.5 * (2 * K * G) * log(m * n)
   } else {
     penalty <- 0.5 * (K - 1) * log(n) + 0.5 * (G - 1) * log(m) + 0.5 * (K * G) * log(m * n)
   }
