@@ -2,7 +2,7 @@
 title: "cobiclust: _Erysiphe alphitoides_ pathobiome tutorial"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{my-vignette}
+  %\VignetteIndexEntry{cobiclust: _Erysiphe alphitoides_ pathobiome tutorial}
   %\VignetteEngine{rmarkdown::render}
   %\VignetteEncoding{UTF-8}
 ---
