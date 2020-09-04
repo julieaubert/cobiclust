@@ -23,11 +23,8 @@ Imports:
     stats
 Suggests: 
     spelling,
-    testthat,
-    knitr,
-    rmarkdown
+    testthat
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr

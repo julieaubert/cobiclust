@@ -12,6 +12,7 @@
 #' @param akg a logical variable indicating whether to use a common dispersion parameter (akg = FALSE) or a dispersion parameter per cocluster (akg = TRUE).
 #' @param cvg_lim a number specifying the threshold used for convergence criterion (cvg_lim = 1e-05 by default).
 #' @param nbiter the maximal number of iterations for the global loop of variational EM algorithm (nbiter = 5000  by default).
+#' @param tol the level of relative iteration convergence tolerance (tol = 1e-04  by default).
 #' @return An object of class cobiclustering
 #' @examples
 #' npc <- c(50, 40) # nodes per class

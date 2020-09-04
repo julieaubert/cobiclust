@@ -7,6 +7,8 @@
 
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![R build
+status](https://github.com/julieaubert/cobiclust/workflows/R-CMD-check/badge.svg)](https://github.com/julieaubert/cobiclust/actions)
 <!-- badges: end -->
 
 The goal of cobiclust is to perform a biclustering of over-dispersed

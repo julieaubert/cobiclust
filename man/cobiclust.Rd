@@ -32,6 +32,8 @@ cobiclust(
 \item{cvg_lim}{a number specifying the threshold used for convergence criterion (cvg_lim = 1e-05 by default).}
 
 \item{nbiter}{the maximal number of iterations for the global loop of variational EM algorithm (nbiter = 5000  by default).}
+
+\item{tol}{the level of relative iteration convergence tolerance (tol = 1e-04  by default).}
 }
 \value{
 An object of class cobiclustering

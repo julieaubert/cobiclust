@@ -45,7 +45,7 @@ attachment::att_to_description()
 
 test()
 spell_check()
-# spelling::updsate_wordlist()
+# spelling::update_wordlist()
 
 
 check()
