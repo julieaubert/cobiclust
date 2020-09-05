@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>cobiclust: Erysiphe alphitoides pathobiome tutorial</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Cobiclust</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown-header">About</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">cobiclust: <em>Erysiphe alphitoides</em> pathobiome tutorial</h1>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This tutorial intends you to use <code>cobiclust</code> to find structure in the <em><em>Erysiphe alphitoides</em> pathobiome dataset</em> kindly provided by <a href="https://corinnevacher.wordpress.com/people/">Corinne Vacher</a>.</p>
+<p>It consists of metabarcoding data of leaf-associated microbiome of 114 leaves sampled from 3 different oaks, with different status with respect to a pathogen. Two barcodes were used: the 16S for the bacterial fraction and the ITS1 for the fungal fraction. One taxa (<em>Erysiphe alphitoides</em>) is of particular interest as it is the causal agent of oak powdery mildew. The goal of the original study (<a href="https://link.springer.com/article/10.1007/s00248-016-0777-x">10.1007/s00248-016-0777-x</a>) was to assess the impact the impact of <em>Erysiphe alphitoides</em> on the foliar fungal and bacterial communities.</p>
+<p>Details on the sampling protocol and bioinformatic analyses of the raw reads are available in the original <a href="https://link.springer.com/article/10.1007/s00248-016-0777-x">publication</a>.</p>
+<p>The data have been preprocessed and filtered (to remove low-abundance, low abundance taxa). They are available from the website</p>
+<ul>
+<li><a href="https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/counts.tsv">count data</a></li>
+<li><a href="https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/metadata.tsv">metadata</a> <!-- - [offsets](https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/offsets.tsv) --></li>
+</ul>
+<p><a href="https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/PLN_oaks.html">Details</a> on the metadata are available from the website.</p>
+</div>
+<div id="loading-useful-packages-or-functions" class="section level1">
+<h1>Loading useful packages or functions</h1>
+<p>We first load <code>cobiclust</code> (<code>ggplot2</code> for some graphics, <code>purr</code> and <code>dplyr</code> for some data manipulations) and <code>pathobiome_usefulfun.R</code> providing functions useful for this example.</p>
+<pre class="r"><code>library(cobiclust)
+library(ggplot2)
+library(purrr)
+library(dplyr)</code></pre>
+<pre><code>## Warning: package &#39;dplyr&#39; was built under R version 4.0.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+</div>
+<div id="importing-the-data" class="section level1">
+<h1>Importing the data</h1>
+<p>We then import the data in R and format them for <code>cobiclust</code>. The fungal and bacterial communities were sequenced using different barcodes and should thus have different offset. We compute offsets matrix with the Total Counts method using the function <code>calculate_offset_perkingdom</code>.</p>
+<pre class="r"><code>counts &lt;- read.table(file = &quot;https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/counts.tsv&quot;)
+metadata &lt;- read.table(file = &quot;https://mia-paris.pages.mia.inra.fr/formation_abondance_reseau/tutoriels/PLN_TP/Data/metadata.tsv&quot;)</code></pre>
+</div>
+<div id="preparing-the-data" class="section level1">
+<h1>Preparing the data</h1>
+<p>To be on the safe side, let’s transform <code>counts</code> and <code>offsets</code> to matrices (they are imported as <code>data.frame</code> by default), and transpose then to have the OTUs in rows and the leaves in columns.</p>
+<pre class="r"><code>counts &lt;- as(t(counts), &quot;matrix&quot;)
+# Calculate offsets matrix
+mat_nuj &lt;- calculate_offset_perkingdom(counts)</code></pre>
+<p>Let’s calculate the percentage of zero counts.</p>
+<pre class="r"><code>length(which(counts==0))*100/length(counts)</code></pre>
+<pre><code>## [1] 34.43739</code></pre>
+</div>
+<div id="fitting-several-poisson-gamma-latent-block-model" class="section level1">
+<h1>Fitting several Poisson-Gamma Latent Block Model</h1>
+<p>We here fit the Poisson-Gamma Latent Block Model implemented in the <code>cobiclust</code> package with a block-specific dispersion parameter (<code>akg = TRUE</code>) for <span class="math inline">\(K = 1, ..., 8\)</span> and <span class="math inline">\(G = 1, ..., 6\)</span>.</p>
+<p>Be caution : this chunk may be quite long to terminate; so we to not evaluate here.</p>
+<pre class="r"><code>Kmax &lt;- 8
+Gmax &lt;- 6
+arg2 &lt;- rep(rep(1:Kmax), Gmax)
+arg3 &lt;- rep(1:Gmax, each = Kmax)
+
+res_akg &lt;-  pmap(list(arg2, arg3), ~ cobiclust(counts, ..1, ..2, nu_j = mat_nuj, akg = TRUE))</code></pre>
+</div>
+<div id="selection-of-the-best-poisson-gamma-latent-block-model" class="section level1">
+<h1>Selection of the best Poisson-Gamma Latent Block Model</h1>
+<pre class="r"><code>arg1 &lt;- 1:(Kmax*Gmax)
+# Calculation of the variational BIC and variational ICL criteria
+crit_akg &lt;- pmap(list(arg1, arg2, arg3), ~ selection_criteria(res_akg[[..1]], K = ..2, G = ..3), )
+crit_akg &lt;- data.frame(Reduce(rbind, crit_akg)) 
+# Selection of the best model
+vICL &lt;- crit_akg %&gt;% dplyr::filter(vICL == max(vICL)) 
+vICL
+ou_best &lt;- apply( vICL[,c(1,6:7)], 1, FUN=function(x) intersect(which(arg2==x[2]),which(arg3==x[3])))
+best_akg &lt;- res_akg[[ou_best]]</code></pre>
+<pre class="r"><code># We directly fit the best model for this example
+best_akg &lt;- cobiclust(counts, K = 5, G = 3, nu_j = mat_nuj, a = NULL, akg = TRUE)</code></pre>
+</div>
+<div id="some-informations" class="section level1">
+<h1>Some informations</h1>
+<div id="groups-in-rows-and-columns" class="section level2">
+<h2>Groups in rows and columns</h2>
+<pre class="r"><code># Groups in rows
+Z &lt;- best_akg$classification$rowclass
+# Groups in columns
+W &lt;- best_akg$classification$colclass
+table(Z)</code></pre>
+<pre><code>## Z
+##  1  2  3  4  5 
+## 35 14 13 49  3</code></pre>
+<pre class="r"><code>table(W)</code></pre>
+<pre><code>## W
+##  1  2  3 
+## 11 70 35</code></pre>
+<pre class="r"><code># Description of the groups
+#sapply(1:max(W),FUN=function(x) table(colnames(counts)[W==x]))
+sapply(1:max(Z),FUN=function(x) rownames(counts)[Z==x])</code></pre>
+<pre><code>## [[1]]
+##  [1] &quot;b_OTU_1045&quot;    &quot;b_OTU_109&quot;     &quot;b_OTU_1191&quot;    &quot;b_OTU_123&quot;    
+##  [5] &quot;b_OTU_1431&quot;    &quot;b_OTU_17&quot;      &quot;b_OTU_171&quot;     &quot;b_OTU_18&quot;     
+##  [9] &quot;b_OTU_182&quot;     &quot;b_OTU_20&quot;      &quot;b_OTU_22&quot;      &quot;b_OTU_235&quot;    
+## [13] &quot;b_OTU_24&quot;      &quot;b_OTU_29&quot;      &quot;b_OTU_304&quot;     &quot;b_OTU_31&quot;     
+## [17] &quot;b_OTU_42&quot;      &quot;b_OTU_443&quot;     &quot;b_OTU_444&quot;     &quot;b_OTU_447&quot;    
+## [21] &quot;b_OTU_47&quot;      &quot;b_OTU_49&quot;      &quot;b_OTU_55&quot;      &quot;b_OTU_58&quot;     
+## [25] &quot;b_OTU_59&quot;      &quot;b_OTU_662&quot;     &quot;b_OTU_69&quot;      &quot;b_OTU_72&quot;     
+## [29] &quot;b_OTU_73&quot;      &quot;f_OTU_4&quot;       &quot;f_OTU_28&quot;      &quot;f_OTU_29&quot;     
+## [33] &quot;f_OTU_32&quot;      &quot;f_OTU_579&quot;     &quot;E_alphitoides&quot;
+## 
+## [[2]]
+##  [1] &quot;b_OTU_1093&quot; &quot;b_OTU_112&quot;  &quot;b_OTU_1200&quot; &quot;b_OTU_153&quot;  &quot;b_OTU_21&quot;  
+##  [6] &quot;b_OTU_25&quot;   &quot;b_OTU_26&quot;   &quot;b_OTU_33&quot;   &quot;b_OTU_34&quot;   &quot;b_OTU_39&quot;  
+## [11] &quot;b_OTU_548&quot;  &quot;b_OTU_90&quot;   &quot;f_OTU_12&quot;   &quot;f_OTU_15&quot;  
+## 
+## [[3]]
+##  [1] &quot;b_OTU_11&quot;   &quot;b_OTU_13&quot;   &quot;b_OTU_8&quot;    &quot;f_OTU_5&quot;    &quot;f_OTU_7&quot;   
+##  [6] &quot;f_OTU_8&quot;    &quot;f_OTU_9&quot;    &quot;f_OTU_10&quot;   &quot;f_OTU_13&quot;   &quot;f_OTU_19&quot;  
+## [11] &quot;f_OTU_26&quot;   &quot;f_OTU_576&quot;  &quot;f_OTU_1141&quot;
+## 
+## [[4]]
+##  [1] &quot;b_OTU_23&quot;   &quot;b_OTU_27&quot;   &quot;b_OTU_329&quot;  &quot;b_OTU_35&quot;   &quot;b_OTU_36&quot;  
+##  [6] &quot;b_OTU_364&quot;  &quot;b_OTU_37&quot;   &quot;b_OTU_41&quot;   &quot;b_OTU_44&quot;   &quot;b_OTU_46&quot;  
+## [11] &quot;b_OTU_48&quot;   &quot;b_OTU_51&quot;   &quot;b_OTU_56&quot;   &quot;b_OTU_57&quot;   &quot;b_OTU_60&quot;  
+## [16] &quot;b_OTU_625&quot;  &quot;b_OTU_63&quot;   &quot;b_OTU_74&quot;   &quot;b_OTU_76&quot;   &quot;b_OTU_81&quot;  
+## [21] &quot;b_OTU_87&quot;   &quot;b_OTU_98&quot;   &quot;f_OTU_2&quot;    &quot;f_OTU_6&quot;    &quot;f_OTU_17&quot;  
+## [26] &quot;f_OTU_20&quot;   &quot;f_OTU_23&quot;   &quot;f_OTU_24&quot;   &quot;f_OTU_25&quot;   &quot;f_OTU_27&quot;  
+## [31] &quot;f_OTU_30&quot;   &quot;f_OTU_33&quot;   &quot;f_OTU_39&quot;   &quot;f_OTU_40&quot;   &quot;f_OTU_43&quot;  
+## [36] &quot;f_OTU_46&quot;   &quot;f_OTU_57&quot;   &quot;f_OTU_63&quot;   &quot;f_OTU_65&quot;   &quot;f_OTU_68&quot;  
+## [41] &quot;f_OTU_79&quot;   &quot;f_OTU_317&quot;  &quot;f_OTU_662&quot;  &quot;f_OTU_672&quot;  &quot;f_OTU_1011&quot;
+## [46] &quot;f_OTU_1085&quot; &quot;f_OTU_1090&quot; &quot;f_OTU_1567&quot; &quot;f_OTU_1656&quot;
+## 
+## [[5]]
+## [1] &quot;f_OTU_1&quot;    &quot;f_OTU_3&quot;    &quot;f_OTU_1278&quot;</code></pre>
+<pre class="r"><code>table(data.frame(metadata$tree,W))</code></pre>
+<pre><code>##               W
+## metadata.tree   1  2  3
+##   intermediate  3 32  3
+##   resistant     8 28  3
+##   susceptible   0 10 29</code></pre>
+</div>
+<div id="models-parameters" class="section level2">
+<h2>Models parameters</h2>
+<pre class="r"><code># alpha_kg
+print(best_akg$parameters$alpha)</code></pre>
+<pre><code>##            [,1]        [,2]        [,3]
+## [1,] 0.02738619 0.014200282 0.055314510
+## [2,] 0.01387322 0.005689657 0.002912498
+## [3,] 0.04091091 0.168706131 0.073183804
+## [4,] 2.64282096 8.597589419 3.272826807
+## [5,] 0.01355924 0.050488428 0.020537934</code></pre>
+<pre class="r"><code># a
+print(best_akg$parameters$a)</code></pre>
+<pre><code>##            [,1]      [,2]      [,3]
+## [1,] 0.17873547 0.1782464 0.2528521
+## [2,] 0.09903957 0.1132469 0.1612811
+## [3,] 0.45398646 0.4276497 0.4119108
+## [4,] 0.24266944 0.3178020 0.3038278
+## [5,] 0.76408940 0.5494621 0.6464182</code></pre>
+</div>
+<div id="some-useful-graphics" class="section level2">
+<h2>Some useful graphics</h2>
+<div id="shannon-diversity-index-according-to-w" class="section level3">
+<h3>Shannon diversity Index according to <span class="math inline">\(W\)</span></h3>
+<p>Let’s represent the Shannon diversity Index, a common measure of diversity using the proportional abundances of each species, calculated for each leaf, according to the group of leaves.</p>
+<pre class="r"><code>don &lt;- counts
+p_i &lt;- apply(don, 2, FUN = function(x) x / sum(x))
+H &lt;- apply(p_i, 2, FUN = function(x) - sum(x * log2(x), na.rm = TRUE))
+df &lt;- data.frame(Leaf = 1:ncol(don), H = H, W = factor(round(best_akg$info$t_jg %*% (1:max(W)))))
+levels(df$W) &lt;- paste(&quot;W&quot;,levels(df$W),sep=&quot;&quot;)
+hwplot &lt;- ggplot(data = df, aes(x = W, y = H))
+hwplot &lt;- hwplot + geom_boxplot() + labs(x = &quot;&quot;)
+print(hwplot)</code></pre>
+<p><img src="cobiclust-example1_files/figure-html/graph1-1.png" width="672" /></p>
+<pre class="r"><code>rm(p_i, df)</code></pre>
+</div>
+<div id="data-reordered-according-to-the-biclustering" class="section level3">
+<h3>Data reordered according to the biclustering</h3>
+<pre class="r"><code>image(log(counts+0.5), main = &quot;Raw data on log-scale&quot;)</code></pre>
+<p><img src="cobiclust-example1_files/figure-html/graph2-1.png" width="672" /></p>
+<pre class="r"><code>image(log(counts[order(Z), order(W)]+0.5), main = &quot;Reordered data on log-scale&quot;)</code></pre>
+<p><img src="cobiclust-example1_files/figure-html/graph2-2.png" width="672" /></p>
+</div>
+<div id="boxplot-of-level-of-infection-in-log-scale-for-the-groups-of-leaves" class="section level3">
+<h3>Boxplot of level of infection in log-scale for the groups of leaves</h3>
+<pre class="r"><code>plot.infection &lt;- ggplot(data = data.frame(pmInfection = log2(metadata$pmInfection), W = as.factor(paste(&quot;W&quot;,W,sep=&quot;&quot;))), aes(y = pmInfection, x = W))
+plot.infection &lt;- plot.infection + geom_boxplot() + labs(x = &quot;&quot;, y = &quot;Level of infection&quot;) + theme_bw()
+print(plot.infection)</code></pre>
+<pre><code>## Warning: Removed 42 rows containing non-finite values (stat_boxplot).</code></pre>
+<p><img src="cobiclust-example1_files/figure-html/graph3-1.png" width="672" /></p>
+</div>
+<div id="boxplot-of-the-hatmu_i-within-each-group-in-row-z_k" class="section level3">
+<h3>Boxplot of the <span class="math inline">\(\hat{\mu_i}\)</span> within each group in row <span class="math inline">\(Z_k\)</span></h3>
+<pre class="r"><code>df1 &lt;- data.frame(Microorg = rownames(counts), Z = round(best_akg$info$s_ik %*% (1:max(Z))))
+df2 &lt;- data.frame(Microorg = rownames(counts), Mu = best_akg$parameters$mu_i)
+df &lt;- merge(df1, df2, by = &quot;Microorg&quot;)
+tmp &lt;- sapply(1:max(Z), FUN = function(x) mean(best_akg$parameters$mu_i[Z == x]))
+df$Z &lt;- factor(df$Z)
+levels(df$Z) &lt;- paste(&quot;Z&quot;, levels(df$Z), sep = &quot;&quot;)
+muzplot &lt;- ggplot(data = df, aes(x = Z, y = log(Mu)))
+muzplot &lt;- muzplot + geom_boxplot() + labs(x = &quot;Z&quot;) 
+muzplot &lt;- muzplot + theme_bw() +  labs(x = &quot;&quot;, y = expression(mu[i])) 
+print(muzplot)</code></pre>
+<p><img src="cobiclust-example1_files/figure-html/graph4-1.png" width="672" /></p>
+<pre class="r"><code>rm(df1, df2, df, tmp)</code></pre>
+</div>
+<div id="plot-of-the-vicl-criterion" class="section level3">
+<h3>Plot of the vICL criterion</h3>
+<p>We propose to plot the <span class="math inline">\(vICL\)</span> criterion according to the (y-axis) to the number of groups in rows <span class="math inline">\(K\)</span> (x-axis). Colours depends on <span class="math inline">\(G\)</span> values.</p>
+<pre class="r"><code>crit_akg$G &lt;- as.factor(crit_akg$G)
+plot.vICL_K &lt;- ggplot(data = crit_akg, aes(y = vICL, x = K, group = G, colour = G))
+
+plot.vICL_K &lt;- plot.vICL_K + geom_point()  + geom_line() +  theme_bw() + theme(legend.position = &quot;bottom&quot;) 
+print(plot.vICL_K)</code></pre>
+</div>
+</div>
+</div>
+<div id="remarks" class="section level1">
+<h1>Remarks</h1>
+<p>This vignette is designed to help you work with <code>cobiclust</code>. Naturally, you can use your imagination to represent or visualize the results.</p>
+<p>I would like to thank Mahendra Mariadassou, Julien Chiquet and Stéphane Robin who wrote a vignette on the use of <a href="http://julien.cremeriefamily.info/PLNmodels/"><code>PLNModels</code></a> based on the same example and from which I was very strongly inspired for the beginning of this vignette.</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

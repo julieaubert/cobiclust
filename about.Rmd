@@ -1,0 +1,9 @@
+---
+title: "About This Website"
+---
+
+This website aims to present applications of the model-based biclustering for overdispersed count data implemented in the `cobiclust`
+package.
+
+- The first example concerns the *_Erysiphe alphitoides_ pathobiome dataset* kindly provided by [Corinne Vacher](https://corinnevacher.wordpress.com/people/).
+
