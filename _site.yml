@@ -5,7 +5,8 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "About"
+    - text: "Erysiphe alphitoides pathobiome tutorial"
+      href: cobiclust-example1.html
 
 
 
