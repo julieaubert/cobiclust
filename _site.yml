@@ -1,0 +1,11 @@
+name: "cobiclust"
+output_dir: "docs"
+navbar:
+  title: "Cobiclust"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "About"
+
+
+
