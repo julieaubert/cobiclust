@@ -10,13 +10,13 @@ W <- diag(KG[2]) %x% matrix(1, npc[2], 1)
 L <- 70 * matrix( runif( KG[1] * KG[2]), KG[1], KG[2])
 M_in_expectation <- Z %*% L %*% t(W)
 size <- 50
-M<-matrix(
+M <- matrix(
   rnbinom(
     n = length(as.vector(M_in_expectation)),
     mu = as.vector(M_in_expectation), size = size)
   , nm[1], nm[2])
-rownames(M) <- paste("OTU", 1:nrow(M), sep = "_")
-colnames(M) <- paste("S", 1:ncol(M), sep = "_")
+rownames(M) <- paste("OTU", seq_len(nrow(M)), sep = "_")
+colnames(M) <- paste("S", seq_len(ncol(M)), sep = "_")
 
 ##################################################################
 #---------------------INITIALISATION -----------------------------
@@ -25,7 +25,7 @@ K <- KG[1]
 G <- KG[2]
 x <- M
 a <- 1/size
-nu_j = rep(1,120)
+nu_j <- rep(1,120)
 res_init <- init_pam(x = x, nu_j = nu_j, a = a, K = K, G = G, akg = FALSE)
 #res_init_akg <- init_pam(x = M, nu_j = nu_j, a = 1/size, K = KG[1], G = KG[2], akg = TRUE)
 # a doit etre coherent avec akg si TRUE a doit etre de la dimension K*G
@@ -56,4 +56,31 @@ test_that("The initialisation is giving  elements of right size", {
 })
 
 
+##################################################################
+#---------------------cobiclust ARGUMENTS -----------------------------
+##################################################################
+test_that("Invalid arguments throw error", {
 
+  expect_error(cobiclust(M, K = 2, G = 3, nu_j = rep(1,120), a = 1/size, cvg_lim = 1e-5, akg = TRUE))
+  expect_error(cobiclust(M, K = 2, G = 3, nu_j = rep(1,120), a = c(1,2), cvg_lim = 1e-5, akg = FALSE))
+  expect_error(cobiclust(M, K = 0, G = 3, nu_j = rep(1,120), a = 1/size, cvg_lim = 1e-5, akg = FALSE))
+  expect_error(cobiclust(M, K = 2, G = "3 groupes", nu_j = rep(1,120), a = 1/size, cvg_lim = 1e-5, akg = FALSE))
+  expect_error(cobiclust(M, K = 2, G = 3, nu_j = rep(1,100), a = 1/size, cvg_lim = 1e-5, akg = FALSE))
+  expect_error(cobiclust(M, K = 2, G = 3, nu_j = matrix(ncol = 2, rep(1,240)), a = 1/size, cvg_lim = 1e-5, akg = FALSE))
+
+
+})
+
+##################################################################
+#---------------------cobiclust RESULTS -----------------------------
+##################################################################
+test_that("Check that cobiclust is running and robust",  {
+
+  res <- cobiclust(M, K = 2, G = 3, nu_j = rep(1,120), a = NULL, cvg_lim = 1e-5, akg = TRUE)
+
+ # expect_is(res, "cobiclustering")
+  expect_type(res, "list")
+  expect_s3_class(res, "cobiclustering")
+  expect_equal(length(res$parameters$pi), K)
+  expect_equal(length(res$parameters$rho), G)
+})

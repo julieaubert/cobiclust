@@ -55,8 +55,8 @@ M<-matrix(
    n = length(as.vector(M_in_expectation)),
    mu = as.vector(M_in_expectation), size = size)
  , nm[1], nm[2])
-rownames(M) <- paste("OTU", 1:nrow(M), sep = "_")
-colnames(M) <- paste("S", 1:ncol(M), sep = "_")
+rownames(M) <- paste('OTU', 1:nrow(M), sep = '_')
+colnames(M) <- paste('S', 1:ncol(M), sep = '_')
 res <- cobiclust(M, K = 2, G = 3, nu_j = rep(1,120), a = 1/size, cvg_lim = 1e-5)
 }
 \seealso{

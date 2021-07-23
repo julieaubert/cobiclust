@@ -1,6 +1,6 @@
 library(devtools)
 library(testthat)
-
+#library(formatR)
 #### Only one time ####
 
 # use_git()
@@ -11,6 +11,10 @@ library(testthat)
 # use_build_ignore("dev_history.R")
 
 # use_gpl3_license("Julie Aubert")
+# Define License with use_*_license()
+#usethis::use_mit_license("Julie Aubert")
+# usethis::use_gpl_license(version = 3, include_future = TRUE)
+
 
 # use_github()
 # use_github_links()
@@ -40,13 +44,18 @@ load_all()
 document()
 
 use_tidy_description()
-attachment::att_to_description()
+attachment::att_amend_desc()
 
 
 test()
 spell_check()
-# spelling::update_wordlist()
+spelling::update_wordlist()
 
+# Pour mettre son code au bon format
+
+ #tidy_dir("~/git/cobiclust/R/", width.cutoff = I(80))
+# Ise à jour des dependances pour nous
+# devtools::install_deps()
 
 check()
 
@@ -54,8 +63,8 @@ goodpractice::goodpractice()
 covr::package_coverage()
 covr::report()
 
-install()
-# build()
+# install()
+# build() install and restart à la place
 
 # use_github_release()
 # usethis::use_version()
