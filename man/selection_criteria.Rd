@@ -4,7 +4,7 @@
 \alias{selection_criteria}
 \title{Calculate selection criteria.}
 \usage{
-selection_criteria(x, K, G)
+selection_criteria(x, K = NULL, G = NULL)
 }
 \arguments{
 \item{x}{The output of the cobiclust function.}

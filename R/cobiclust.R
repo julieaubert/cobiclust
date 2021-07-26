@@ -43,11 +43,12 @@ cobiclust <- function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_l
     # if (!is.matrix(x)){ stop('x should be a matrix.') }
 
     #--- on the LBM parameters
+    assertthat::assert_that(is.numeric(K))
     assertthat::assert_that((K < nrow(x)) | (K > 1), msg = "Inadequate number of groups in row. K should be between 1 and the total number of rows of the input data.")
 
     # if ((K > nrow(x)) | (K < 1)) { stop('Inadequate number of groups in row. K
     # should be between 1 and the total number of rows of the input data.') }
-
+    assertthat::assert_that(is.numeric(G))
     assertthat::assert_that((G < ncol(x)) | (G > 1), msg = "Inadequate number of groups in columns. G should be between 1 and the total number of rows of the input data.")
     # if ((G > ncol(x)) | (G < 1)) { stop('Inadequate number of groups in columns. G
     # should be between 1 and the total number of rows of the input data.') }

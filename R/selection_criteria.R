@@ -17,7 +17,7 @@
 #' }
 #' @export
 
-selection_criteria <- function(x, K, G) {
+selection_criteria <- function(x, K = NULL, G = NULL) {
     if (is.null(K)) {
         K <- x$K
     }else {

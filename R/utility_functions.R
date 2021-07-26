@@ -59,8 +59,6 @@ qukg_calculation <- function(s_ik = s_ik, t_jg = t_jg, x = x, mu_i = mu_i, nu_j 
     a_tilde <- tcrossprod(s_ik %*% a, t_jg) + rowSums(s_ik) %*% diag(nrow = 1, ncol = 1,
         1) %*% rowSums(t_jg) * x
     if (is.matrix(nu_j)) {
-        # b_tilde <- a + t(sapply(seq_along(mu_i), FUN=function(j) (s_ik[j,] * mu_i[j])
-        # %*% tcrossprod(alpha_c, t_jg * nu_j[j,])))
         b_tilde <- tcrossprod(s_ik %*% a, t_jg) + t(sapply(seq_along(mu_i), FUN = function(j) (s_ik[j,
             ] * mu_i[j]) %*% tcrossprod(alpha_c, t_jg * nu_j[j, ])))
     } else {
@@ -92,8 +90,6 @@ alpha_calculation <- function(s_ik = s_ik, t_jg = t_jg, nu_j = nu_j, mu_i = mu_i
     K = K, G = G, x = x, exp_utilde = exp_utilde) {
     if (is.matrix(nu_j)) {
         denum <- crossprod((s_ik * mu_i), ((nu_j * exp_utilde) %*% t_jg))
-        # denum <- crossprod((s_ik * mu_i), t(sapply(seq_along(mu_i), FUN=function(j)
-        # exp_utilde[j,] %*% (t_jg * mat_nuj[j,]) )))
     } else {
         denum <- crossprod((s_ik * mu_i), (exp_utilde %*% (t_jg * nu_j)))
     }
@@ -166,7 +162,6 @@ lb_calculation <- function(x = x, qu_param = qu_param, s_ik = s_ik, pi_c = pi_c,
 
 }
 
-
 #' Useful function to estimate the parameter a
 #'
 #' @param x x.
@@ -180,33 +175,6 @@ foo_a <- function(x, nb, left_bound, right_bound) {
     nb * (1 + log(x) - digamma(x)) + left_bound - right_bound
 }
 
-#' Internal function - estimation of the parameter a
-#'
-#' @param x a matrix of observations. Columns correspond to biological samples and rows to microorganisms.
-#' @param y y.
-#' @param threshold threshold.
-#' @param nb nb.
-#' @param left_bound left_bound.
-#' @param right_bound right_bound.
-#' @return a numeric.
-#' @export
-#' @keywords internal
-dicho <- function(x, y, threshold, nb, left_bound, right_bound) {
-    while (abs(y - x) >= threshold) {
-        z <- (x + y)/2
-        if (foo_a(z, nb = nb, left_bound = left_bound, right_bound = right_bound) ==
-            0)
-            break else if (foo_a(x, nb = nb, left_bound = left_bound, right_bound = right_bound) *
-            foo_a(z, nb = nb, left_bound = left_bound, right_bound = right_bound) <=
-            0) {
-            y <- z
-        } else {
-            x <- z
-        }
-    }
-    return(z)
-}
-
 #' Calculate the BIC penalty
 #'
 #' @param x an object of class biclustering.
@@ -214,6 +182,7 @@ dicho <- function(x, y, threshold, nb, left_bound, right_bound) {
 #' @export
 #' @keywords internal
 penalty <- function(x) {
+    assertthat::assert_that(is.list(x))
     K <- x$K
     G <- x$G
     n <- length(x$parameters$mu_i)

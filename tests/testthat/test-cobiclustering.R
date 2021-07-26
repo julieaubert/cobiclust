@@ -78,10 +78,9 @@ test_that("Check that cobiclust is running and robust",  {
 
   res <- cobiclust(M, K = 2, G = 3, nu_j = rep(1,120), a = NULL, cvg_lim = 1e-5, akg = TRUE)
 
+ # expect_is(res, "cobiclustering")
   expect_type(res, "list")
   expect_s3_class(res, "cobiclustering")
   expect_equal(length(res$parameters$pi), K)
   expect_equal(length(res$parameters$rho), G)
-  expect_error(summary.cobiclustering(M))
 })
-
