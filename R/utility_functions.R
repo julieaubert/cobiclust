@@ -24,8 +24,9 @@ qu_calculation <- function(s_ik = s_ik, t_jg = t_jg, x = x, mu_i = mu_i, nu_j = 
     a_tilde <- a + rowSums(s_ik) %*% diag(nrow = 1, ncol = 1, 1) %*% rowSums(t_jg) *
         x
     if (is.matrix(nu_j)) {
-        b_tilde <- a + t(sapply(seq_along(mu_i), FUN = function(j) (s_ik[j, ] * mu_i[j]) %*%
-            tcrossprod(alpha_c, t_jg * nu_j[j, ])))
+      #  b_tilde <- a + t(sapply(seq_along(mu_i), FUN = function(j) (s_ik[j, ] * mu_i[j]) %*%
+      #      tcrossprod(alpha_c, t_jg * nu_j[j, ])))
+        b_tilde <- a +  mu_i*(s_ik) %*% tcrossprod(alpha_c, t_jg)*nu_j
 
     } else {
         b_tilde <- a + (s_ik * mu_i) %*% tcrossprod(alpha_c, t_jg * nu_j)
@@ -59,8 +60,10 @@ qukg_calculation <- function(s_ik = s_ik, t_jg = t_jg, x = x, mu_i = mu_i, nu_j 
     a_tilde <- tcrossprod(s_ik %*% a, t_jg) + rowSums(s_ik) %*% diag(nrow = 1, ncol = 1,
         1) %*% rowSums(t_jg) * x
     if (is.matrix(nu_j)) {
-        b_tilde <- tcrossprod(s_ik %*% a, t_jg) + t(sapply(seq_along(mu_i), FUN = function(j) (s_ik[j,
-            ] * mu_i[j]) %*% tcrossprod(alpha_c, t_jg * nu_j[j, ])))
+  #      b_tilde <- tcrossprod(s_ik %*% a, t_jg) + t(sapply(seq_along(mu_i), FUN = function(j) (s_ik[j,
+  #          ] * mu_i[j]) %*% tcrossprod(alpha_c, t_jg * nu_j[j, ])))
+
+        b_tilde <- tcrossprod(s_ik %*% a, t_jg) + mu_i*(s_ik) %*% tcrossprod(alpha_c, t_jg)*nu_j
     } else {
         b_tilde <- tcrossprod(s_ik %*% a, t_jg) + (s_ik * mu_i) %*% tcrossprod(alpha_c,
             t_jg * nu_j)
@@ -129,15 +132,17 @@ lb_calculation <- function(x = x, qu_param = qu_param, s_ik = s_ik, pi_c = pi_c,
 
     alpha_matrix <- s_ik %*% tcrossprod(alpha_c, t_jg)
     if (isFALSE(akg)) {
-        if (is.matrix(nu_j)) {
-            term3 <- sum(sapply(seq_len(ncol(x)), FUN = function(j) stats::dnbinom(x[, j],
-                size = a, mu = mu_i * nu_j[, j] * alpha_matrix[, j], log = TRUE)))  # verif 1/a ou a.
+     #   if (is.matrix(nu_j)) {
+           # term3 <- sum(sapply(seq_len(ncol(x)), FUN = function(j) stats::dnbinom(x[, j],
+        #        size = a, mu = mu_i * nu_j[, j] * alpha_matrix[, j], log = TRUE)))  # verif 1/a ou a.
+            term3 <- sum(stats::dnbinom(matrix(ncol = 1, x), size = a,
+                                        mu = mu_i * matrix(ncol = 1, nu_j) * matrix(ncol = 1,alpha_matrix), log = TRUE))
 
-        } else {
-            term3 <- sum(sapply(seq_len(ncol(x)), FUN = function(j) stats::dnbinom(x[, j],
-                size = a, mu = mu_i * nu_j[j] * alpha_matrix[, j], log = TRUE)))  # verif 1/a ou a.
+      #  } else {
+       #     term3 <- sum(sapply(seq_len(ncol(x)), FUN = function(j) stats::dnbinom(x[, j],
+        #        size = a, mu = mu_i * nu_j[j] * alpha_matrix[, j], log = TRUE)))  # verif 1/a ou a.
 
-        }
+  #      }
 
     } else {
         aa <- tcrossprod(s_ik %*% a, t_jg)
@@ -145,8 +150,10 @@ lb_calculation <- function(x = x, qu_param = qu_param, s_ik = s_ik, pi_c = pi_c,
         if (is.matrix(nu_j)) {
             term3 <- sum(sapply(seq_len(ncol(x)), FUN = function(j) stats::dnbinom(x[, j],
                 size = aa[, j], mu = mu_i * nu_j[, j] * alpha_matrix[, j], log = TRUE)))
+        #    term3 <- sum(stats::dnbinom(matrix(ncol = 1, x), size = matrix(ncol = 1, aa),
+        #                                mu = mu_i * matrix(ncol = 1, nu_j) * matrix(ncol = 1,alpha_matrix), log = TRUE))
 
-        } else {
+       } else {
             term3 <- sum(sapply(seq_len(ncol(x)), FUN = function(j) stats::dnbinom(x[, j],
                 size = aa[, j], mu = mu_i * nu_j[j] * alpha_matrix[, j], log = TRUE)))
 

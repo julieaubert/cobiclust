@@ -35,6 +35,7 @@
 
 cobiclust <- function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_lim = 1e-05,
     nbiter = 5000, tol = 1e-04) {
+    message("Nb of biclusters: ", K, "x", G)
 
     #---------------------  Some preliminary tests ---------------------
 
@@ -275,9 +276,12 @@ cobiclust <- function(x, K = 2, G = 3, nu_j = NULL, a = NULL, akg = FALSE, cvg_l
                 # a0 <- matrix(nrow = K, ncol = G, sapply(1:(K*G), FUN = function(g) dicho(x =
                 # 0.01, y = 100, threshold = 1e-08, nb = n_kg[g], left_bound = left_bound[g],
                 # right_bound = right_bound[g])))
-                a0 <- matrix(nrow = K, ncol = G, sapply(1:(K * G), FUN = function(g) stats::uniroot(f = foo_a,
-                  lower = 0.01, upper = n_kg[g], left_bound = left_bound[g], right_bound = right_bound[g],
-                  nb = n_kg[g])$root))
+                #a0 <- matrix(nrow = K, ncol = G, sapply(1:(K * G), FUN = function(g) stats::uniroot(f = foo_a,
+                #  lower = 0.01, upper = ceiling(n_kg[g]), left_bound = left_bound[g], right_bound = right_bound[g],
+                #  nb = n_kg[g])$root))
+                a0 <- matrix(nrow = K, ncol = G, mapply(function(x1, x2, x3)  stats::uniroot(f = foo_a,
+                                                                                       lower = 0.01, upper = ceiling(x1), left_bound = x2, right_bound = x3,
+                                                                                       nb = x1)$root, n_kg, left_bound, right_bound))
             }
         }
         if (isFALSE(akg)) {
